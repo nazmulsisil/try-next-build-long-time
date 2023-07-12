@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   console.log("waiting....");
 
-  await new Promise((resolve) => setTimeout(resolve, 1 * 60 * 999)); // delay
+  // await new Promise((resolve) => setTimeout(resolve, 1 * 60 * 999)); // delay
 
   console.log("wait done");
 
