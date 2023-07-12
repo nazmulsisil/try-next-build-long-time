@@ -36,6 +36,8 @@ export default function HomePage({
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { host = "" } = req.headers;
 
+  console.log({ host });
+
   // Now you can parse the host to get the subdomain.
   const subdomain = host.split(".")[0];
 
