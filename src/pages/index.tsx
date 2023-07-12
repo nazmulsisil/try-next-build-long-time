@@ -116,15 +116,3 @@ export default function Home() {
     </main>
   );
 }
-
-export async function getStaticProps() {
-  console.log("waiting....");
-
-  await new Promise((resolve) => setTimeout(resolve, 1 * 60 * 999)); // 2 minute delay
-
-  console.log("wait done");
-
-  return {
-    props: {}, // your props here
-  };
-}
