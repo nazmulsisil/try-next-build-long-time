@@ -20,8 +20,8 @@ export default function HomePage({
 }: PageProps) {
   return (
     <div>
-      <h3>subdomain</h3>
-      <h3>host</h3>
+      <h3>subdomain: {subdomain}</h3>
+      <h3>host: {host}</h3>
 
       <hr />
 
