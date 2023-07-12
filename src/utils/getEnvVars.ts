@@ -1,6 +1,4 @@
-const getSubdomain = (url = "") => {
-  return url.split(".")[0].split("://")[1];
-};
+import { getSubdomain } from "./getSubdomain";
 
 export const getEnvVars = (url = "") => {
   let subdomain = getSubdomain(url);
