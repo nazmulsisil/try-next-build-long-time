@@ -9,11 +9,16 @@ const subdomainApiMap: Record<string, string> = {
 
 interface PageProps {
   apiReadOnTheServer?: string;
+  resolvedUrl?: string;
 }
 
-export default function HomePage({ apiReadOnTheServer }: PageProps) {
+export default function HomePage({
+  apiReadOnTheServer,
+  resolvedUrl,
+}: PageProps) {
   return (
     <div>
+      <h3>API URL read on the server: {resolvedUrl}</h3>
       <h3>API URL read on the server: {apiReadOnTheServer}</h3>
 
       {/* TODO: get API_URL on the client side */}
@@ -32,6 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         apiReadOnTheServer: "subdomainApiMap[subdomain]_not_found", // Here you'll provide API URL based on subdomain
+        resolvedUrl,
       },
     };
   }
