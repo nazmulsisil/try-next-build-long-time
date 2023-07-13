@@ -10,12 +10,11 @@ export default function HomePage({
   slugString,
 }: PageProps) {
   return (
-    <div>
+    <div className="min-h-screen">
       <table>
         <tbody>
           <tr>
             <td>
-              {" "}
               <b>API URL read on the server: </b>
             </td>
             <td>{apiReadOnTheServer}</td>
@@ -23,7 +22,6 @@ export default function HomePage({
 
           <tr>
             <td>
-              {" "}
               <b>Next public API URL read on the client: </b>
             </td>
             <td>{process.env.NEXT_PUBLIC_API_URL}</td>
