@@ -1,59 +1,71 @@
-import { GetStaticProps, GetStaticPaths } from "next";
-
-const subdomainApiMap: Record<string, string> = {
-  qw: process.env.API_URL_QW || "",
-  iq: process.env.API_URL_IQ || "",
-  // more subdomains and corresponding API URLs...
-};
+import { GetStaticProps } from "next";
 
 interface PageProps {
   apiReadOnTheServer?: string;
+  slugString?: string;
 }
 
-export default function HomePage({ apiReadOnTheServer }: PageProps) {
+export default function HomePage({
+  apiReadOnTheServer,
+  slugString,
+}: PageProps) {
   return (
     <div>
-      <h3>API URL read on the server: {apiReadOnTheServer}</h3>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              {" "}
+              <b>API URL read on the server: </b>
+            </td>
+            <td>{apiReadOnTheServer}</td>
+          </tr>
 
-      {/* TODO: get API_URL on the client side */}
-      <h3>API URL read on the client: ?</h3>
+          <tr>
+            <td>
+              {" "}
+              <b>Next public API URL read on the client: </b>
+            </td>
+            <td>{process.env.NEXT_PUBLIC_QW_API_URL}</td>
+          </tr>
+
+          <tr>
+            <td>
+              <b>SlugString: </b>
+            </td>
+            <td>{slugString}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const subdomain = params?.slug?.[0] as string;
+export async function getStaticPaths() {
+  return {
+    paths: [], // Specify pre-rendered routes here or leave it empty if none
+    fallback: "blocking",
+  };
+}
 
-  if (!subdomainApiMap[subdomain]) {
-    return {
-      props: {
-        apiReadOnTheServer: "subdomainApiMap[subdomain]_not_found", // Here you'll provide API URL based on subdomain
-      },
-      revalidate: 300, // revalidation time
-    };
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const slugString = (params?.slug as string[])?.join("/");
+
+  if (!process.env.QW_API_URL) {
+    throw new Error("process.env.QW_API_URL is not defined");
   }
 
   console.log("waiting....");
-
-  // await new Promise((resolve) => setTimeout(resolve, 1 * 60 * 999)); // delay
-
+  // wait for data to be fetched based on the domain process.env.QW_API_URL
+  await new Promise((resolve) => setTimeout(resolve, 1 * 2 * 1000)); // 2s delay
   console.log("wait done");
 
   return {
     props: {
-      apiReadOnTheServer: subdomainApiMap[subdomain], // Here you'll provide API URL based on subdomain
+      apiReadOnTheServer:
+        process.env.QW_API_URL || `process.env.QW_API_URL (((NOT FOUND)))`,
+      slugString,
     },
-    revalidate: 300, // revalidation time
-  };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = Object.keys(subdomainApiMap).map((subdomain) => ({
-    params: { slug: [subdomain] },
-  }));
-
-  return {
-    paths,
-    fallback: "blocking", // Important for ISR
+    revalidate: 3, // Revalidate every 60 seconds
   };
 };
